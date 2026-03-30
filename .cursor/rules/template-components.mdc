@@ -1,0 +1,39 @@
+---
+description: Framer Motion template component conventions
+globs: "src/components/templates/**"
+alwaysApply: false
+---
+
+# Invite Template Components
+
+## Structure
+Each template is a self-contained client component in `src/components/templates/`:
+- `birthday.tsx` — Balloons, confetti, cake (pink/purple/orange)
+- `marriage.tsx` — Floating hearts, floral corners (rose/pink)
+- `baby-shower.tsx` — Clouds, stars (sky/teal)
+- `new-baby.tsx` — Footprints, bubbles (amber/pink/rose)
+- `template-renderer.tsx` — Maps `templateType` string to component
+
+## Props Interface
+Every template receives `{ invite: Invite; onRsvp: () => void }`.
+
+## No Math.random() During Render
+React strict mode flags impure renders. Pre-compute random values into static arrays **outside** the component, then pass as props:
+
+```tsx
+// ❌ BAD — impure render
+{Array.from({ length: 10 }).map((_, i) => (
+  <Star x={`${Math.random() * 100}%`} />
+))}
+
+// ✅ GOOD — pre-computed
+const starPositions = [{ x: "12%", y: "15%" }, { x: "45%", y: "22%" }, ...];
+// in render:
+{starPositions.map((pos, i) => <Star key={i} x={pos.x} y={pos.y} />)}
+```
+
+## Adding a New Template
+1. Create `src/components/templates/your-template.tsx`
+2. Export component with signature: `(props: { invite: Invite; onRsvp: () => void }) => JSX.Element`
+3. Add it to `templateMap` in `template-renderer.tsx`
+4. Add the new type to the `TemplateType` union in `template-picker.tsx` and `invites.ts`

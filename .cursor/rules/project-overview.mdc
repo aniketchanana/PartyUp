@@ -1,0 +1,34 @@
+---
+description: Project overview and architecture for PartyUp invite app
+alwaysApply: true
+---
+# PartyUp — Party Invite & RSVP App
+
+## Tech Stack
+- **Next.js 16.2** (App Router, Turbopack) — `src/` directory structure
+- **Firebase 12** — Auth (email/password) + Firestore (database)
+- **Tailwind CSS v4** — use `bg-linear-to-r` not `bg-gradient-to-r`
+- **shadcn/ui v4** — Base UI primitives, NOT Radix. No `asChild` prop. Use `buttonVariants()` + `<Link>` for link-buttons.
+- **Framer Motion** — all animations
+- **date-fns** — date formatting
+
+## Project Structure
+- `src/app/` — Next.js App Router pages
+- `src/components/ui/` — shadcn components (do NOT edit these)
+- `src/components/auth/` — Auth form (inline) and dialog
+- `src/components/dashboard/` — Host dashboard components
+- `src/components/invite-creation/` — Multi-step invite creation
+- `src/components/templates/` — 4 Framer Motion animated invite templates
+- `src/components/guest/` — Guest RSVP dialog and gift selector
+- `src/lib/firebase.ts` — Firebase app initialization
+- `src/lib/auth-context.tsx` — Auth context provider
+- `src/lib/firestore/` — Firestore CRUD helpers (invites, gifts, rsvps)
+
+## Key Routes
+- `/` — Landing page with inline auth form (no dialog)
+- `/dashboard` — Host dashboard (protected, client-side auth guard)
+- `/dashboard/create` — 3-step invite creation (Details → Template → Gifts)
+- `/invite/[id]` — Public guest view with SSR `generateMetadata()` for OG tags
+
+## Firebase Config
+Client-side Firebase config is in `src/lib/firebase.ts`. This is safe to commit publicly — security comes from Firestore rules, not the API key.

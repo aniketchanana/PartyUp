@@ -1,0 +1,33 @@
+---
+description: shadcn/ui v4 patterns — Base UI, no asChild, button link pattern
+globs: "src/components/**/*.tsx,src/app/**/*.tsx"
+alwaysApply: false
+---
+
+# shadcn/ui v4 Patterns
+
+## Button as Link
+shadcn v4 uses Base UI, NOT Radix. There is **no `asChild` prop**. Never use `render={<Link>}` on Button either — it triggers a `nativeButton` warning.
+
+```tsx
+// ❌ BAD — will error
+<Button asChild><Link href="/foo">Go</Link></Button>
+<Button render={<Link href="/foo" />}>Go</Button>
+
+// ✅ GOOD — use buttonVariants on Link directly
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+<Link href="/foo" className={cn(buttonVariants({ variant: "outline", size: "sm" }))}>
+  Go
+</Link>
+```
+
+## Adding Components
+```bash
+npx shadcn@latest add [component-name]
+```
+Components land in `src/components/ui/`. Do not manually edit them.
+
+## Tailwind v4
+Use `bg-linear-to-r` instead of `bg-gradient-to-r`. The old syntax still works but triggers lint warnings.

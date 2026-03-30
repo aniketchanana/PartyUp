@@ -1,0 +1,30 @@
+---
+description: Party theme styling conventions
+globs: "src/app/globals.css,src/components/templates/**,src/app/**/page.tsx"
+alwaysApply: false
+---
+
+# Styling & Party Theme
+
+## Theme Colors (defined in globals.css)
+Custom party colors available as Tailwind classes:
+- `text-party-pink`, `bg-party-pink` — vibrant pink
+- `text-party-purple`, `bg-party-purple` — deep purple (also `--primary`)
+- `text-party-orange`, `bg-party-orange` — warm orange
+- `text-party-yellow`, `bg-party-yellow` — bright yellow
+- `text-party-green`, `bg-party-green` — fresh green
+- `text-party-blue`, `bg-party-blue` — sky blue
+
+## Gradient Utilities
+- `.party-gradient` — full vibrant gradient (pink → purple → blue → green) for CTAs and icons
+- `.party-gradient-soft` — muted version for backgrounds
+
+## Typography
+- `font-heading` (Poppins) — headings, titles, emphasis
+- `font-sans` (Inter) — body text, inherited by default
+
+## Conventions
+- Use `rounded-2xl` or `rounded-full` for playful feel
+- Buttons use `party-gradient text-white font-semibold` for primary actions
+- Cards use shadcn `Card` with subtle hover (`hover:shadow-md hover:-translate-y-1`)
+- Use Framer Motion `motion.div` for entrance animations on pages
