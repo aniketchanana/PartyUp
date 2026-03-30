@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { claimGifts, getAvailableGifts, type Gift } from "@/lib/firestore/gifts";
 import { createRSVP } from "@/lib/firestore/rsvps";
-import { Loader2, PartyPopper } from "lucide-react";
+import { Loader2, Minus, PartyPopper, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { GiftSelector } from "./gift-selector";
@@ -147,7 +147,7 @@ export function RsvpDialog({
                 <Label htmlFor="guest-name">Your Name</Label>
                 <Input
                   id="guest-name"
-                  placeholder="Aniket Chanana"
+                  placeholder="Enter your name..."
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -170,16 +170,28 @@ export function RsvpDialog({
 
               {/* Pax */}
               <div className="space-y-2">
-                <Label htmlFor="pax">Number of Guests (including you)</Label>
-                <Input
-                  id="pax"
-                  type="number"
-                  min={1}
-                  max={20}
-                  value={pax}
-                  onChange={(e) => setPax(Math.max(1, parseInt(e.target.value) || 1))}
-                  required
-                />
+                <Label>Number of Guests (including you)</Label>
+                <div className="flex items-center justify-center gap-4">
+                  <button
+                    type="button"
+                    onClick={() => setPax(Math.max(1, pax - 1))}
+                    disabled={pax <= 1}
+                    className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-primary text-primary transition-colors hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:pointer-events-none"
+                  >
+                    <Minus className="h-5 w-5" />
+                  </button>
+                  <span className="w-12 text-center text-2xl font-bold tabular-nums">
+                    {pax}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setPax(Math.min(20, pax + 1))}
+                    disabled={pax >= 20}
+                    className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-primary text-primary transition-colors hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:pointer-events-none"
+                  >
+                    <Plus className="h-5 w-5" />
+                  </button>
+                </div>
               </div>
 
               <Button
