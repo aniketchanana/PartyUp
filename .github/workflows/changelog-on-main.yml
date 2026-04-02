@@ -11,7 +11,9 @@ on:
   pull_request_target:
     branches:
       - main
-    types: [closed]
+    # Run on PR activity so the check appears on PRs; actual changelog mutation
+    # still happens only on merged PRs (guarded in steps below).
+    types: [opened, reopened, synchronize, ready_for_review, labeled, unlabeled, closed]
   workflow_dispatch:
     inputs:
       pr_number:
