@@ -1,0 +1,57 @@
+# On each push to main (including PR merges), append one line to CHANGELOG.md with a
+# Cursor Agent CLI–generated summary and merge timestamp. Pushes that only touch
+# CHANGELOG.md do not retrigger this workflow (avoids commit loops).
+#
+# Required repository secret: CURSOR_API_KEY (Cursor dashboard → Integrations / API)
+
+name: Changelog on main
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "CHANGELOG.md"
+  workflow_dispatch: # manual test run (uses current main; same steps as push)
+
+concurrency:
+  group: changelog-main
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  update-changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Cursor Agent CLI
+        run: curl https://cursor.com/install -fsS | bash
+
+      - name: Update CHANGELOG.md
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
+          MERGED_AT: ${{ github.event.head_commit.timestamp }}
+          CHANGELOG_PATH: CHANGELOG.md
+        run: |
+          chmod +x .github/scripts/update_changelog.sh
+          .github/scripts/update_changelog.sh
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          if git diff --staged --quiet; then
+            echo "No changelog changes to commit."
+            exit 0
+          fi
+          git commit -m "docs(changelog): append merge summary [changelog]"
+          git push
