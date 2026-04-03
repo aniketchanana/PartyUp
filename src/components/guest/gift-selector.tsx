@@ -28,7 +28,15 @@ export function GiftSelector({
           <span className="text-muted-foreground font-normal">(optional)</span>
         </h4>
       </div>
-      <div className="max-h-[min(45vh,14rem)] space-y-2 overflow-y-auto pr-1 sm:max-h-48">
+      <div
+        className={cn(
+          "space-y-2",
+          // Mobile: no inner scroll — one scroll on the dialog (taller sheet, less jank)
+          "max-sm:overflow-visible",
+          // Tablet/desktop modal: keep a capped list with its own scroll
+          "sm:max-h-48 sm:overflow-y-auto sm:pr-1",
+        )}
+      >
         <AnimatePresence>
           {gifts.map((gift, i) => (
             <motion.div
