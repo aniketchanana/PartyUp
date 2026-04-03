@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { claimGifts, getAvailableGifts, type Gift } from "@/lib/firestore/gifts";
 import { createRSVP } from "@/lib/firestore/rsvps";
+import { cn } from "@/lib/utils";
 import { Loader2, Minus, PartyPopper, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -94,19 +95,42 @@ export function RsvpDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        if (!nextOpen) handleClose();
+      }}
+    >
+      <DialogContent
+        className={cn(
+          // Mobile-first: bottom sheet, edge-to-edge — reads larger and easier to tap
+          "max-sm:top-auto max-sm:bottom-0 max-sm:left-0 max-sm:right-0 max-sm:translate-x-0 max-sm:translate-y-0",
+          "max-sm:w-full max-sm:max-w-none max-sm:rounded-t-3xl max-sm:rounded-b-none",
+          "max-sm:max-h-[min(92vh,900px)] max-sm:border-x-0 max-sm:border-b-0",
+          "max-sm:pb-[max(1.25rem,env(safe-area-inset-bottom,0px))] max-sm:pt-3",
+          "max-sm:shadow-[0_-12px_40px_-12px_rgba(0,0,0,0.14)]",
+          "max-sm:data-open:slide-in-from-bottom-8 max-sm:data-closed:slide-out-to-bottom-8",
+          // sm+: centered modal, a bit wider than before
+          "sm:max-w-lg",
+          "max-h-[min(90vh,800px)] overflow-y-auto overflow-x-hidden",
+          "p-5 sm:p-6 gap-0",
+        )}
+      >
+        <div
+          className="mx-auto mb-1 h-1 w-10 shrink-0 rounded-full bg-muted-foreground/30 sm:hidden"
+          aria-hidden
+        />
         {submitted ? (
-          <div className="flex flex-col items-center py-8 text-center">
-            <PartyPopper className="h-16 w-16 text-primary mb-4" />
-            <DialogTitle className="font-heading text-2xl font-bold mb-2">
+          <div className="flex flex-col items-center py-6 text-center sm:py-8">
+            <PartyPopper className="mb-4 h-16 w-16 text-primary sm:h-20 sm:w-20" />
+            <DialogTitle className="font-heading mb-2 text-2xl font-bold sm:text-3xl">
               You&apos;re In!
             </DialogTitle>
-            <p className="text-muted-foreground">
+            <p className="max-w-sm text-base text-muted-foreground sm:text-lg">
               Thanks for RSVPing. We can&apos;t wait to see you!
             </p>
             <Button
-              className="mt-6 party-gradient text-white font-semibold"
+              className="mt-8 min-h-11 w-full max-w-xs party-gradient text-base font-semibold text-white sm:mt-6"
               onClick={handleClose}
             >
               Done
@@ -114,16 +138,16 @@ export function RsvpDialog({
           </div>
         ) : (
           <>
-            <DialogHeader>
-              <DialogTitle className="font-heading text-xl font-bold">
+            <DialogHeader className="gap-1.5 space-y-0 pb-1 text-left sm:pb-0">
+              <DialogTitle className="font-heading text-2xl font-bold tracking-tight sm:text-xl">
                 RSVP
               </DialogTitle>
-              <DialogDescription>
+              <DialogDescription className="text-base sm:text-sm">
                 Let the host know you&apos;re coming!
               </DialogDescription>
             </DialogHeader>
 
-            <form onSubmit={handleSubmit} className="space-y-5 mt-2">
+            <form onSubmit={handleSubmit} className="mt-4 space-y-6 sm:mt-2 sm:space-y-5">
               {/* Gift selection */}
               {loadingGifts ? (
                 <div className="flex justify-center py-4">
@@ -144,13 +168,16 @@ export function RsvpDialog({
 
               {/* Name */}
               <div className="space-y-2">
-                <Label htmlFor="guest-name">Your Name</Label>
+                <Label htmlFor="guest-name" className="text-base sm:text-sm">
+                  Your Name
+                </Label>
                 <Input
                   id="guest-name"
                   placeholder="Enter your name..."
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
+                  className="min-h-11 px-3 text-base sm:min-h-8 sm:px-2.5 sm:text-sm"
                 />
               </div>
 
@@ -162,34 +189,36 @@ export function RsvpDialog({
                     checked={anonymous}
                     onCheckedChange={(c) => setAnonymous(c === true)}
                   />
-                  <Label htmlFor="anonymous" className="font-normal text-sm">
+                  <Label htmlFor="anonymous" className="text-base font-normal sm:text-sm">
                     Keep my name anonymous for the gift (surprise!)
                   </Label>
                 </div>
               )}
 
               {/* Pax */}
-              <div className="space-y-2">
-                <Label>Number of Guests (including you)</Label>
-                <div className="flex items-center justify-center gap-4">
+              <div className="space-y-3">
+                <Label className="text-base sm:text-sm">
+                  Number of Guests (including you)
+                </Label>
+                <div className="flex items-center justify-center gap-6 sm:gap-4">
                   <button
                     type="button"
                     onClick={() => setPax(Math.max(1, pax - 1))}
                     disabled={pax <= 1}
-                    className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-primary text-primary transition-colors hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:pointer-events-none"
+                    className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-primary text-primary transition-colors hover:bg-primary hover:text-primary-foreground disabled:pointer-events-none disabled:opacity-30 sm:h-10 sm:w-10"
                   >
-                    <Minus className="h-5 w-5" />
+                    <Minus className="h-6 w-6 sm:h-5 sm:w-5" />
                   </button>
-                  <span className="w-12 text-center text-2xl font-bold tabular-nums">
+                  <span className="min-w-12 text-center text-3xl font-bold tabular-nums sm:text-2xl">
                     {pax}
                   </span>
                   <button
                     type="button"
                     onClick={() => setPax(Math.min(20, pax + 1))}
                     disabled={pax >= 20}
-                    className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-primary text-primary transition-colors hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:pointer-events-none"
+                    className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-primary text-primary transition-colors hover:bg-primary hover:text-primary-foreground disabled:pointer-events-none disabled:opacity-30 sm:h-10 sm:w-10"
                   >
-                    <Plus className="h-5 w-5" />
+                    <Plus className="h-6 w-6 sm:h-5 sm:w-5" />
                   </button>
                 </div>
               </div>
@@ -197,7 +226,7 @@ export function RsvpDialog({
               <Button
                 type="submit"
                 disabled={submitting || !name.trim()}
-                className="w-full party-gradient text-white font-semibold"
+                className="min-h-12 w-full text-base font-semibold party-gradient text-white sm:min-h-9 sm:text-sm"
               >
                 {submitting ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
