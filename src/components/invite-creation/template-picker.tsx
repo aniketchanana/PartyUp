@@ -58,9 +58,7 @@ export function TemplatePicker({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-heading text-xl">
-          Choose a Template
-        </CardTitle>
+        <CardTitle className="font-heading text-xl">Choose a Template</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -81,7 +79,7 @@ export function TemplatePicker({
               {selected === t.id && (
                 <motion.div
                   layoutId="template-check"
-                  className="absolute top-3 right-3 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground"
+                  className="bg-primary text-primary-foreground absolute top-3 right-3 flex h-6 w-6 items-center justify-center rounded-full"
                 >
                   <Check className="h-3.5 w-3.5" />
                 </motion.div>
@@ -92,9 +90,7 @@ export function TemplatePicker({
                 <t.icon className="h-5 w-5 text-white" />
               </div>
               <h4 className="font-heading font-semibold">{t.label}</h4>
-              <p className="text-xs text-muted-foreground mt-1">
-                {t.description}
-              </p>
+              <p className="text-muted-foreground mt-1 text-xs">{t.description}</p>
             </motion.button>
           ))}
         </div>
@@ -107,7 +103,7 @@ export function TemplatePicker({
           <Button
             onClick={onNext}
             disabled={!selected}
-            className="flex-1 party-gradient text-white font-semibold"
+            className="party-gradient flex-1 font-semibold text-white"
           >
             Next: Gift Registry
           </Button>

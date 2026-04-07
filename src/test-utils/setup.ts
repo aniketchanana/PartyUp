@@ -1,63 +1,63 @@
-import '@testing-library/jest-dom'
-import React from 'react'
-import { vi } from 'vitest'
-import { mockRouterPush } from './mocks'
+import "@testing-library/jest-dom";
+import React from "react";
+import { vi } from "vitest";
+import { mockRouterPush } from "./mocks";
 
 // @base-ui/react Checkbox uses PointerEvent (not in jsdom)
-if (typeof globalThis.PointerEvent === 'undefined') {
+if (typeof globalThis.PointerEvent === "undefined") {
   globalThis.PointerEvent = class extends MouseEvent {
     constructor(type: string, init?: MouseEventInit) {
-      super(type, init)
+      super(type, init);
     }
-  } as typeof PointerEvent
+  } as typeof PointerEvent;
 }
 
-vi.mock('next/navigation', () => ({
+vi.mock("next/navigation", () => ({
   useRouter: () => ({
     push: mockRouterPush,
     replace: vi.fn(),
     prefetch: vi.fn(),
   }),
-}))
+}));
 
-vi.mock('next/link', () => ({
+vi.mock("next/link", () => ({
   default: function Link({
     children,
     href,
     ...rest
   }: {
-    children: React.ReactNode
-    href: string
-    [k: string]: unknown
+    children: React.ReactNode;
+    href: string;
+    [k: string]: unknown;
   }) {
-    return React.createElement('a', { href, ...rest }, children)
+    return React.createElement("a", { href, ...rest }, children);
   },
-}))
+}));
 
-vi.mock('sonner', () => ({
+vi.mock("sonner", () => ({
   toast: {
     success: vi.fn(),
     error: vi.fn(),
   },
-}))
+}));
 
-vi.mock('framer-motion', () => {
+vi.mock("framer-motion", () => {
   const MOTION_PROP_KEYS = new Set([
-    'layoutId',
-    'initial',
-    'animate',
-    'transition',
-    'whileHover',
-    'whileTap',
-    'exit',
-  ])
+    "layoutId",
+    "initial",
+    "animate",
+    "transition",
+    "whileHover",
+    "whileTap",
+    "exit",
+  ]);
   const stripMotionProps = (props: Record<string, unknown>) => {
-    const rest = { ...props }
+    const rest = { ...props };
     for (const k of MOTION_PROP_KEYS) {
-      delete rest[k]
+      delete rest[k];
     }
-    return rest
-  }
+    return rest;
+  };
   const motion = new Proxy(
     {},
     {
@@ -66,30 +66,27 @@ vi.mock('framer-motion', () => {
           children,
           ...props
         }: {
-          children?: React.ReactNode
-          [k: string]: unknown
+          children?: React.ReactNode;
+          [k: string]: unknown;
         }) {
           return React.createElement(
             tag,
             stripMotionProps(props as Record<string, unknown>) as never,
-            children
-          )
-        }
+            children,
+          );
+        };
       },
-    }
-  )
+    },
+  );
   return {
     motion,
-    AnimatePresence: ({
-      children,
-    }: {
-      children?: React.ReactNode
-    }) => React.createElement(React.Fragment, null, children),
-  }
-})
+    AnimatePresence: ({ children }: { children?: React.ReactNode }) =>
+      React.createElement(React.Fragment, null, children),
+  };
+});
 
 // Mock Firebase modules globally
-vi.mock('firebase/firestore', () => ({
+vi.mock("firebase/firestore", () => ({
   getFirestore: vi.fn(),
   doc: vi.fn(),
   getDoc: vi.fn(),
@@ -106,17 +103,19 @@ vi.mock('firebase/firestore', () => ({
     now: vi.fn(),
     fromDate: vi.fn(),
   },
-}))
+}));
 
-vi.mock('firebase/auth', () => ({
+vi.mock("firebase/auth", () => ({
   getAuth: vi.fn(),
   onAuthStateChanged: vi.fn(),
   signInWithEmailAndPassword: vi.fn(),
   createUserWithEmailAndPassword: vi.fn(),
+  GoogleAuthProvider: vi.fn(),
+  signInWithPopup: vi.fn(),
   signOut: vi.fn(),
-}))
+}));
 
-vi.mock('firebase/app', () => ({
+vi.mock("firebase/app", () => ({
   initializeApp: vi.fn(),
   getApps: vi.fn(() => []),
-}))
+}));

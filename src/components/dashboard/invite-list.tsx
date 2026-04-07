@@ -69,7 +69,7 @@ export function InviteList() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <Loader2 className="text-primary h-8 w-8 animate-spin" />
       </div>
     );
   }
@@ -77,11 +77,9 @@ export function InviteList() {
   if (invites.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
-        <PartyPopper className="h-16 w-16 text-muted-foreground/40 mb-4" />
-        <h3 className="font-heading text-xl font-semibold text-muted-foreground">
-          No invites yet
-        </h3>
-        <p className="text-sm text-muted-foreground/70 mt-1">
+        <PartyPopper className="text-muted-foreground/40 mb-4 h-16 w-16" />
+        <h3 className="font-heading text-muted-foreground text-xl font-semibold">No invites yet</h3>
+        <p className="text-muted-foreground/70 mt-1 text-sm">
           Create your first party invite to get started!
         </p>
       </div>
@@ -102,11 +100,11 @@ export function InviteList() {
             <Card className="overflow-hidden">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    <CardTitle className="font-heading text-lg truncate">
+                  <div className="min-w-0 flex-1">
+                    <CardTitle className="font-heading truncate text-lg">
                       {invite.heading}
                     </CardTitle>
-                    <div className="mt-1 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                    <div className="text-muted-foreground mt-1 flex flex-wrap items-center gap-3 text-sm">
                       <span className="flex items-center gap-1">
                         <MapPin className="h-3.5 w-3.5" />
                         {invite.location}
@@ -124,20 +122,14 @@ export function InviteList() {
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="flex flex-wrap gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => copyLink(invite.id)}
-                  >
+                  <Button variant="outline" size="sm" onClick={() => copyLink(invite.id)}>
                     <Link2 className="mr-1.5 h-3.5 w-3.5" />
                     Copy Link
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() =>
-                      setExpanded(expanded === invite.id ? null : invite.id)
-                    }
+                    onClick={() => setExpanded(expanded === invite.id ? null : invite.id)}
                   >
                     {expanded === invite.id ? (
                       <ChevronUp className="mr-1.5 h-3.5 w-3.5" />
@@ -189,13 +181,11 @@ function ExpandedDetails({ inviteId }: { inviteId: string }) {
   const [adding, setAdding] = useState(false);
 
   useEffect(() => {
-    Promise.all([getRSVPs(inviteId), getGifts(inviteId)]).then(
-      ([r, g]) => {
-        setRsvps(r);
-        setGifts(g);
-        setLoading(false);
-      }
-    );
+    Promise.all([getRSVPs(inviteId), getGifts(inviteId)]).then(([r, g]) => {
+      setRsvps(r);
+      setGifts(g);
+      setLoading(false);
+    });
   }, [inviteId]);
 
   async function handleAddGift() {
@@ -204,7 +194,10 @@ function ExpandedDetails({ inviteId }: { inviteId: string }) {
     setAdding(true);
     try {
       const id = await addGift(inviteId, name, newGiftLink.trim() || undefined);
-      setGifts((prev) => [...prev, { id, itemName: name, link: newGiftLink.trim() || null, isClaimed: false, claimedBy: null }]);
+      setGifts((prev) => [
+        ...prev,
+        { id, itemName: name, link: newGiftLink.trim() || null, isClaimed: false, claimedBy: null },
+      ]);
       setNewGiftName("");
       setNewGiftLink("");
       toast.success(`"${name}" added to registry`);
@@ -228,7 +221,7 @@ function ExpandedDetails({ inviteId }: { inviteId: string }) {
   if (loading) {
     return (
       <div className="flex justify-center py-6">
-        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+        <Loader2 className="text-muted-foreground h-5 w-5 animate-spin" />
       </div>
     );
   }
@@ -239,18 +232,18 @@ function ExpandedDetails({ inviteId }: { inviteId: string }) {
     <div className="grid gap-6 sm:grid-cols-2">
       {/* RSVPs */}
       <div>
-        <h4 className="flex items-center gap-2 font-heading text-sm font-semibold mb-3">
-          <Users className="h-4 w-4 text-primary" />
+        <h4 className="font-heading mb-3 flex items-center gap-2 text-sm font-semibold">
+          <Users className="text-primary h-4 w-4" />
           RSVPs ({rsvps.length} responses, {totalPax} guests)
         </h4>
         {rsvps.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No RSVPs yet</p>
+          <p className="text-muted-foreground text-sm">No RSVPs yet</p>
         ) : (
           <div className="space-y-2">
             {rsvps.map((r) => (
               <div
                 key={r.id}
-                className="flex items-center justify-between rounded-lg bg-muted/50 px-3 py-2 text-sm"
+                className="bg-muted/50 flex items-center justify-between rounded-lg px-3 py-2 text-sm"
               >
                 <span className="font-medium">{r.guestName}</span>
                 <Badge variant="outline">{r.pax} pax</Badge>
@@ -262,14 +255,13 @@ function ExpandedDetails({ inviteId }: { inviteId: string }) {
 
       {/* Gifts */}
       <div>
-        <h4 className="flex items-center gap-2 font-heading text-sm font-semibold mb-3">
-          <GiftIcon className="h-4 w-4 text-primary" />
-          Gift Registry ({gifts.filter((g) => g.isClaimed).length}/
-          {gifts.length} claimed)
+        <h4 className="font-heading mb-3 flex items-center gap-2 text-sm font-semibold">
+          <GiftIcon className="text-primary h-4 w-4" />
+          Gift Registry ({gifts.filter((g) => g.isClaimed).length}/{gifts.length} claimed)
         </h4>
 
         {/* Add gift inputs */}
-        <div className="space-y-2 mb-3 rounded-lg border p-2.5">
+        <div className="mb-3 space-y-2 rounded-lg border p-2.5">
           <Input
             placeholder="Gift name..."
             value={newGiftName}
@@ -311,7 +303,7 @@ function ExpandedDetails({ inviteId }: { inviteId: string }) {
         </div>
 
         {gifts.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No gifts added yet — add one above!</p>
+          <p className="text-muted-foreground text-sm">No gifts added yet — add one above!</p>
         ) : (
           <div className="space-y-2">
             <AnimatePresence>
@@ -321,14 +313,10 @@ function ExpandedDetails({ inviteId }: { inviteId: string }) {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="flex items-center justify-between gap-2 rounded-lg bg-muted/50 px-3 py-2 text-sm"
+                  className="bg-muted/50 flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm"
                 >
-                  <div className="flex-1 min-w-0">
-                    <span
-                      className={
-                        g.isClaimed ? "line-through text-muted-foreground" : ""
-                      }
-                    >
+                  <div className="min-w-0 flex-1">
+                    <span className={g.isClaimed ? "text-muted-foreground line-through" : ""}>
                       {g.itemName}
                     </span>
                     {g.link && (
@@ -336,14 +324,14 @@ function ExpandedDetails({ inviteId }: { inviteId: string }) {
                         href={g.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1 text-xs text-primary hover:underline mt-0.5 truncate"
+                        className="text-primary mt-0.5 flex items-center gap-1 truncate text-xs hover:underline"
                       >
                         <ExternalLink className="h-3 w-3 shrink-0" />
                         <span className="truncate">{g.link}</span>
                       </a>
                     )}
                   </div>
-                  <div className="flex items-center gap-1.5 shrink-0">
+                  <div className="flex shrink-0 items-center gap-1.5">
                     {g.isClaimed ? (
                       <Badge variant="secondary" className="text-xs">
                         {g.claimedBy}
@@ -352,13 +340,13 @@ function ExpandedDetails({ inviteId }: { inviteId: string }) {
                       <>
                         <Badge
                           variant="outline"
-                          className="text-xs text-party-green border-party-green"
+                          className="text-party-green border-party-green text-xs"
                         >
                           Available
                         </Badge>
                         <button
                           onClick={() => handleRemoveGift(g.id, g.itemName)}
-                          className="rounded p-0.5 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                          className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded p-0.5 transition-colors"
                         >
                           <X className="h-3.5 w-3.5" />
                         </button>

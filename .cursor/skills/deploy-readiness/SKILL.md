@@ -15,20 +15,27 @@ Pre-deployment verification for shipping to Vercel. Run each check in order, tra
 ## Checks
 
 ### 1. TypeScript — `npx tsc --noEmit`
+
 ### 2. ESLint — `npm run lint`
+
 ### 3. Tests + Coverage — `npm run test -- --coverage`
+
 ### 4. Console Statements
+
 Search `src/**/*.{ts,tsx}` (excluding `test-utils/`, `*.test.*`) for `console.log`, `console.warn`, `console.error`, `console.debug`. Report file:line.
 
 ### 5. Environment Variables
+
 Scan `src/` for `process.env.NEXT_PUBLIC_*` references. Verify all are documented in `.env.example`. Flag orphaned or missing vars.
 
 Expected: `FIREBASE_API_KEY`, `AUTH_DOMAIN`, `PROJECT_ID`, `STORAGE_BUCKET`, `MESSAGING_SENDER_ID`, `APP_ID`, `MEASUREMENT_ID` (all `NEXT_PUBLIC_FIREBASE_*`).
 
 ### 6. Secrets Check
+
 Verify `.env`, `.env.local`, `serviceAccountKey.json` are NOT tracked. Check `git status` and `git diff --cached`.
 
 ### 7. Deploy Config
+
 Read `vercel.json` (branch config) and `next.config.ts` (no risky experimental flags, image domains if needed).
 
 ### 8. Build — `npm run build`

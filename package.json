@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "prettier --write . && eslint . --fix",
+    "lint:check": "prettier --check . && eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "test": "vitest --passWithNoTests",
     "test:watch": "vitest --watch",
     "test:coverage": "vitest --coverage"
@@ -40,7 +43,10 @@
     "@vitest/coverage-v8": "^1.4.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
+    "eslint-config-prettier": "^10.1.8",
     "jsdom": "^24.0.0",
+    "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^1.4.0"

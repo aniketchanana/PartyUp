@@ -21,7 +21,15 @@ function Balloon({ x, color, delay }: { x: string; color: string; delay: number 
         <svg width="48" height="64" viewBox="0 0 48 64" fill="none">
           <ellipse cx="24" cy="22" rx="20" ry="22" fill={color} />
           <ellipse cx="24" cy="22" rx="20" ry="22" fill="white" fillOpacity="0.15" />
-          <ellipse cx="18" cy="14" rx="5" ry="7" fill="white" fillOpacity="0.3" transform="rotate(-15 18 14)" />
+          <ellipse
+            cx="18"
+            cy="14"
+            rx="5"
+            ry="7"
+            fill="white"
+            fillOpacity="0.3"
+            transform="rotate(-15 18 14)"
+          />
           <polygon points="24,44 21,48 27,48" fill={color} />
           <line x1="24" y1="48" x2="24" y2="64" stroke={color} strokeWidth="1" opacity="0.6" />
         </svg>
@@ -83,13 +91,7 @@ function Confetti({ delay, data }: { delay: number; data: ConfettiData }) {
   );
 }
 
-export function BirthdayTemplate({
-  invite,
-  onRsvp,
-}: {
-  invite: Invite;
-  onRsvp: () => void;
-}) {
+export function BirthdayTemplate({ invite, onRsvp }: { invite: Invite; onRsvp: () => void }) {
   const balloonColors = ["#f472b6", "#a78bfa", "#fb923c", "#facc15", "#34d399"];
 
   return (
@@ -104,12 +106,7 @@ export function BirthdayTemplate({
       {/* Balloons */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-full overflow-hidden">
         {balloonColors.map((color, i) => (
-          <Balloon
-            key={i}
-            x={`${10 + i * 20}%`}
-            color={color}
-            delay={0.3 + i * 0.2}
-          />
+          <Balloon key={i} x={`${10 + i * 20}%`} color={color} delay={0.3 + i * 0.2} />
         ))}
       </div>
 
@@ -119,7 +116,7 @@ export function BirthdayTemplate({
           initial={{ scale: 0, rotate: -10 }}
           animate={{ scale: 1, rotate: 0 }}
           transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.3 }}
-          className="text-7xl mb-4"
+          className="mb-4 text-7xl"
         >
           🎂
         </motion.div>
@@ -128,7 +125,7 @@ export function BirthdayTemplate({
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6 }}
-          className="font-heading text-4xl font-extrabold text-center sm:text-5xl md:text-6xl bg-linear-to-r from-pink-500 via-purple-500 to-orange-500 bg-clip-text text-transparent"
+          className="font-heading bg-linear-to-r from-pink-500 via-purple-500 to-orange-500 bg-clip-text text-center text-4xl font-extrabold text-transparent sm:text-5xl md:text-6xl"
         >
           {invite.heading}
         </motion.h1>
@@ -139,15 +136,15 @@ export function BirthdayTemplate({
           transition={{ delay: 0.8 }}
           className="mt-8 flex flex-col items-center gap-3 text-gray-600"
         >
-          <div className="flex items-center gap-2 rounded-full bg-white/80 backdrop-blur-sm px-5 py-2 shadow-sm">
+          <div className="flex items-center gap-2 rounded-full bg-white/80 px-5 py-2 shadow-sm backdrop-blur-sm">
             <User className="h-4 w-4 text-pink-500" />
             <span className="font-medium">Hosted by {invite.hostName}</span>
           </div>
-          <div className="flex items-center gap-2 rounded-full bg-white/80 backdrop-blur-sm px-5 py-2 shadow-sm">
+          <div className="flex items-center gap-2 rounded-full bg-white/80 px-5 py-2 shadow-sm backdrop-blur-sm">
             <Calendar className="h-4 w-4 text-purple-500" />
             <span>{format(invite.dateTime, "EEEE, MMMM do yyyy 'at' h:mm a")}</span>
           </div>
-          <div className="flex items-center gap-2 rounded-full bg-white/80 backdrop-blur-sm px-5 py-2 shadow-sm">
+          <div className="flex items-center gap-2 rounded-full bg-white/80 px-5 py-2 shadow-sm backdrop-blur-sm">
             <MapPin className="h-4 w-4 text-orange-500" />
             <span>{invite.location}</span>
           </div>

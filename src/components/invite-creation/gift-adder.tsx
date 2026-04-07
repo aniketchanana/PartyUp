@@ -41,8 +41,8 @@ export function GiftAdder({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-heading text-xl flex items-center gap-2">
-          <Gift className="h-5 w-5 text-primary" />
+        <CardTitle className="font-heading flex items-center gap-2 text-xl">
+          <Gift className="text-primary h-5 w-5" />
           Gift Registry
           <Badge variant="secondary" className="ml-auto font-normal">
             Optional
@@ -50,9 +50,9 @@ export function GiftAdder({
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <p className="text-sm text-muted-foreground">
-          Add gifts you&apos;d like guests to pick from. Claimed gifts will be
-          hidden from other guests.
+        <p className="text-muted-foreground text-sm">
+          Add gifts you&apos;d like guests to pick from. Claimed gifts will be hidden from other
+          guests.
         </p>
 
         <div className="space-y-3 rounded-lg border p-3">
@@ -74,7 +74,7 @@ export function GiftAdder({
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="gift-link" className="text-xs font-medium text-muted-foreground">
+            <Label htmlFor="gift-link" className="text-muted-foreground text-xs font-medium">
               Product Link <span className="text-muted-foreground/60">(optional)</span>
             </Label>
             <Input
@@ -111,16 +111,16 @@ export function GiftAdder({
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className="flex items-center gap-2 rounded-lg bg-muted/50 px-3 py-2"
+                  className="bg-muted/50 flex items-center gap-2 rounded-lg px-3 py-2"
                 >
-                  <div className="flex-1 min-w-0">
+                  <div className="min-w-0 flex-1">
                     <span className="text-sm font-medium">{g.name}</span>
                     {g.link && (
                       <a
                         href={g.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1 text-xs text-primary hover:underline mt-0.5 truncate"
+                        className="text-primary mt-0.5 flex items-center gap-1 truncate text-xs hover:underline"
                       >
                         <ExternalLink className="h-3 w-3 shrink-0" />
                         <span className="truncate">{g.link}</span>
@@ -130,7 +130,7 @@ export function GiftAdder({
                   <button
                     type="button"
                     onClick={() => removeGift(i)}
-                    className="shrink-0 rounded-full p-1 hover:bg-destructive/20 text-muted-foreground hover:text-destructive transition-colors"
+                    className="hover:bg-destructive/20 text-muted-foreground hover:text-destructive shrink-0 rounded-full p-1 transition-colors"
                   >
                     <X className="h-3.5 w-3.5" />
                   </button>
@@ -148,7 +148,7 @@ export function GiftAdder({
           <Button
             onClick={onSubmit}
             disabled={submitting}
-            className="flex-1 party-gradient text-white font-semibold"
+            className="party-gradient flex-1 font-semibold text-white"
           >
             {submitting ? (
               <Loader2 className="h-4 w-4 animate-spin" />
