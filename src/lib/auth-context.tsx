@@ -1,17 +1,18 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { auth, db } from "@/lib/firebase";
 import {
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut as firebaseSignOut,
-  type User,
+    createUserWithEmailAndPassword,
+    signOut as firebaseSignOut,
+    getRedirectResult,
+    GoogleAuthProvider,
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    signInWithRedirect,
+    type User
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "@/lib/firebase";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
 const USERS_COLLECTION = "users";
 
@@ -30,6 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // 1. Listen for standard login state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (u) => {
       setUser(u);
@@ -38,7 +40,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return unsubscribe;
   }, []);
 
-  // NOTE: Redirect completion handler removed — we use popup auth now.
+  // 2. Catch the Google redirect result and save to Firestore
+  useEffect(() => {
+    const handleRedirect = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        
+        if (result?.user) {
+          const currentUser = result.user;
+          // Just save to Firestore here. onAuthStateChanged handles setUser.
+          await setDoc(
+            doc(db, USERS_COLLECTION, currentUser.uid),
+            { uid: currentUser.uid, email: currentUser.email ?? null },
+            { merge: true }
+          );
+        }
+      } catch (error) {
+        console.error("Error during redirect:", error);
+      }
+    };
+  
+    handleRedirect();
+  }, []);
 
   async function signIn(email: string, password: string) {
     await signInWithEmailAndPassword(auth, email, password);
@@ -54,14 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function signInWithGoogle() {
     const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-    const popupUser = result.user;
-    setUser(popupUser);
-    await setDoc(
-      doc(db, USERS_COLLECTION, popupUser.uid),
-      { uid: popupUser.uid, email: popupUser.email ?? null },
-      { merge: true },
-    );
+    await signInWithRedirect(auth, provider);
   }
 
   async function signOut() {
