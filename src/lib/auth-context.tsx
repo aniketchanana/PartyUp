@@ -8,7 +8,8 @@ import {
     GoogleAuthProvider,
     onAuthStateChanged,
     signInWithEmailAndPassword,
-    signInWithRedirect,
+    signInWithPopup,
+    signInWithRedirect, // Added this import
     type User
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
@@ -40,15 +41,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return unsubscribe;
   }, []);
 
-  // 2. Catch the Google redirect result and save to Firestore
+  // 2. Catch the Google redirect result (fires only in production/redirect flow)
   useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      return; // Skip checking for redirects entirely on localhost
+    }
     const handleRedirect = async () => {
       try {
         const result = await getRedirectResult(auth);
         
         if (result?.user) {
           const currentUser = result.user;
-          // Just save to Firestore here. onAuthStateChanged handles setUser.
           await setDoc(
             doc(db, USERS_COLLECTION, currentUser.uid),
             { uid: currentUser.uid, email: currentUser.email ?? null },
@@ -77,7 +80,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function signInWithGoogle() {
     const provider = new GoogleAuthProvider();
-    await signInWithRedirect(auth, provider);
+
+    if (process.env.NODE_ENV === "development") {
+      // Local: Use Popup to avoid cross-origin issues
+      const result = await signInWithPopup(auth, provider);
+      const currentUser = result.user;
+      
+      // Save to Firestore immediately because getRedirectResult won't catch this
+      await setDoc(
+        doc(db, USERS_COLLECTION, currentUser.uid),
+        { uid: currentUser.uid, email: currentUser.email ?? null },
+        { merge: true }
+      );
+    } else {
+      // Production: Use Redirect for better mobile support
+      await signInWithRedirect(auth, provider);
+    }
   }
 
   async function signOut() {
