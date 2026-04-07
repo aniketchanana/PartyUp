@@ -5,7 +5,17 @@ import { format } from "date-fns";
 import { MapPin, Calendar, User } from "lucide-react";
 import type { Invite } from "@/lib/firestore/invites";
 
-function Footprint({ x, y, delay, rotation }: { x: string; y: string; delay: number; rotation: number }) {
+function Footprint({
+  x,
+  y,
+  delay,
+  rotation,
+}: {
+  x: string;
+  y: string;
+  delay: number;
+  rotation: number;
+}) {
   return (
     <motion.div
       className="absolute text-pink-200"
@@ -25,7 +35,17 @@ function Footprint({ x, y, delay, rotation }: { x: string; y: string; delay: num
   );
 }
 
-function FloatingBubble({ delay, x, size, duration }: { delay: number; x: string; size: number; duration: number }) {
+function FloatingBubble({
+  delay,
+  x,
+  size,
+  duration,
+}: {
+  delay: number;
+  x: string;
+  size: number;
+  duration: number;
+}) {
   return (
     <motion.div
       className="absolute bottom-0 rounded-full bg-linear-to-t from-pink-200 to-yellow-100"
@@ -38,19 +58,21 @@ function FloatingBubble({ delay, x, size, duration }: { delay: number; x: string
 }
 
 const bubbleData = [
-  { size: 14, duration: 7.2 }, { size: 22, duration: 8.5 }, { size: 10, duration: 6.8 },
-  { size: 26, duration: 9.1 }, { size: 12, duration: 7.6 }, { size: 18, duration: 8.0 },
-  { size: 20, duration: 6.3 }, { size: 15, duration: 9.4 }, { size: 24, duration: 7.0 },
-  { size: 11, duration: 8.8 }, { size: 16, duration: 7.4 }, { size: 28, duration: 9.2 },
+  { size: 14, duration: 7.2 },
+  { size: 22, duration: 8.5 },
+  { size: 10, duration: 6.8 },
+  { size: 26, duration: 9.1 },
+  { size: 12, duration: 7.6 },
+  { size: 18, duration: 8.0 },
+  { size: 20, duration: 6.3 },
+  { size: 15, duration: 9.4 },
+  { size: 24, duration: 7.0 },
+  { size: 11, duration: 8.8 },
+  { size: 16, duration: 7.4 },
+  { size: 28, duration: 9.2 },
 ];
 
-export function NewBabyTemplate({
-  invite,
-  onRsvp,
-}: {
-  invite: Invite;
-  onRsvp: () => void;
-}) {
+export function NewBabyTemplate({ invite, onRsvp }: { invite: Invite; onRsvp: () => void }) {
   const footprints = [
     { x: "15%", y: "20%", delay: 0.5, rotation: -20 },
     { x: "25%", y: "35%", delay: 0.8, rotation: -15 },
@@ -88,7 +110,7 @@ export function NewBabyTemplate({
           initial={{ scale: 0, rotate: -15 }}
           animate={{ scale: 1, rotate: 0 }}
           transition={{ type: "spring", stiffness: 180, damping: 12, delay: 0.3 }}
-          className="text-7xl mb-4"
+          className="mb-4 text-7xl"
         >
           👶
         </motion.div>
@@ -97,7 +119,7 @@ export function NewBabyTemplate({
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="text-sm uppercase tracking-[0.25em] text-rose-400 font-medium"
+          className="text-sm font-medium tracking-[0.25em] text-rose-400 uppercase"
         >
           Come Celebrate Our New Arrival
         </motion.div>
@@ -106,7 +128,7 @@ export function NewBabyTemplate({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.6 }}
-          className="mt-3 font-heading text-4xl font-extrabold text-center sm:text-5xl md:text-6xl bg-linear-to-r from-rose-500 via-pink-500 to-amber-500 bg-clip-text text-transparent"
+          className="font-heading mt-3 bg-linear-to-r from-rose-500 via-pink-500 to-amber-500 bg-clip-text text-center text-4xl font-extrabold text-transparent sm:text-5xl md:text-6xl"
         >
           {invite.heading}
         </motion.h1>
@@ -122,7 +144,7 @@ export function NewBabyTemplate({
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1 }}
-          className="mt-6 rounded-3xl bg-white/60 backdrop-blur-sm border border-pink-100 p-6 shadow-sm max-w-sm w-full space-y-3"
+          className="mt-6 w-full max-w-sm space-y-3 rounded-3xl border border-pink-100 bg-white/60 p-6 shadow-sm backdrop-blur-sm"
         >
           <div className="flex items-center gap-3 text-rose-700">
             <User className="h-5 w-5 text-rose-400" />
@@ -130,9 +152,7 @@ export function NewBabyTemplate({
           </div>
           <div className="flex items-center gap-3 text-rose-700">
             <Calendar className="h-5 w-5 text-rose-400" />
-            <span>
-              {format(invite.dateTime, "EEEE, MMMM do yyyy 'at' h:mm a")}
-            </span>
+            <span>{format(invite.dateTime, "EEEE, MMMM do yyyy 'at' h:mm a")}</span>
           </div>
           <div className="flex items-center gap-3 text-rose-700">
             <MapPin className="h-5 w-5 text-rose-400" />

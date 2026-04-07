@@ -41,6 +41,7 @@ Analyze all staged and unstaged changes, draft a meaningful commit message based
    - Never include file lists in the commit message — `git log --stat` already shows that.
 
    Example:
+
    ```
    feat(invite): add gift claiming with transaction-based conflict prevention
 

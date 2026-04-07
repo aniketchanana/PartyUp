@@ -23,7 +23,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex flex-1 items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <Loader2 className="text-primary h-8 w-8 animate-spin" />
       </div>
     );
   }
@@ -33,20 +33,18 @@ export default function DashboardPage() {
   return (
     <div className="flex flex-1 flex-col">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur-lg">
+      <header className="bg-background/80 sticky top-0 z-40 border-b backdrop-blur-lg">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg party-gradient">
+            <div className="party-gradient flex h-8 w-8 items-center justify-center rounded-lg">
               <PartyPopper className="h-4 w-4 text-white" />
             </div>
-            <span className="font-heading text-xl font-bold bg-linear-to-r from-party-pink to-party-purple bg-clip-text text-transparent">
+            <span className="font-heading from-party-pink to-party-purple bg-linear-to-r bg-clip-text text-xl font-bold text-transparent">
               PartyUp
             </span>
           </Link>
           <div className="flex items-center gap-3">
-            <span className="hidden text-sm text-muted-foreground sm:block">
-              {user.email}
-            </span>
+            <span className="text-muted-foreground hidden text-sm sm:block">{user.email}</span>
             <Button variant="ghost" size="sm" onClick={signOut}>
               <LogOut className="mr-1.5 h-4 w-4" />
               Sign Out
@@ -64,11 +62,12 @@ export default function DashboardPage() {
         >
           <div>
             <h1 className="font-heading text-3xl font-bold">Your Invites</h1>
-            <p className="text-muted-foreground mt-1">
-              Create and manage your party invitations
-            </p>
+            <p className="text-muted-foreground mt-1">Create and manage your party invitations</p>
           </div>
-          <Link href="/dashboard/create" className={cn(buttonVariants(), "party-gradient text-white font-semibold shadow-md")}>
+          <Link
+            href="/dashboard/create"
+            className={cn(buttonVariants(), "party-gradient font-semibold text-white shadow-md")}
+          >
             <Plus className="mr-1.5 h-4 w-4" />
             Create Invite
           </Link>

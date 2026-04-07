@@ -28,11 +28,7 @@ export function InviteClient({ invite: raw }: { invite: SerializedInvite }) {
   return (
     <>
       <TemplateRenderer invite={invite} onRsvp={() => setRsvpOpen(true)} />
-      <RsvpDialog
-        inviteId={invite.id}
-        open={rsvpOpen}
-        onOpenChange={setRsvpOpen}
-      />
+      <RsvpDialog inviteId={invite.id} open={rsvpOpen} onOpenChange={setRsvpOpen} />
     </>
   );
 }

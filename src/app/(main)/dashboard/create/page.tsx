@@ -5,14 +5,8 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { createInvite } from "@/lib/firestore/invites";
 import { addGifts, type GiftInput } from "@/lib/firestore/gifts";
-import {
-  InviteForm,
-  type InviteFormValues,
-} from "@/components/invite-creation/invite-form";
-import {
-  TemplatePicker,
-  type TemplateType,
-} from "@/components/invite-creation/template-picker";
+import { InviteForm, type InviteFormValues } from "@/components/invite-creation/invite-form";
+import { TemplatePicker, type TemplateType } from "@/components/invite-creation/template-picker";
 import { GiftAdder } from "@/components/invite-creation/gift-adder";
 import { buttonVariants } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -72,7 +66,7 @@ export default function CreateInvitePage() {
   if (authLoading) {
     return (
       <div className="flex flex-1 items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <Loader2 className="text-primary h-8 w-8 animate-spin" />
       </div>
     );
   }
@@ -83,14 +77,14 @@ export default function CreateInvitePage() {
   return (
     <div className="flex flex-1 flex-col">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur-lg">
+      <header className="bg-background/80 sticky top-0 z-40 border-b backdrop-blur-lg">
         <div className="mx-auto flex h-16 max-w-2xl items-center gap-4 px-4">
           <Link href="/dashboard" className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}>
             <ArrowLeft className="mr-1.5 h-4 w-4" />
             Back
           </Link>
           <div className="flex items-center gap-2">
-            <PartyPopper className="h-5 w-5 text-primary" />
+            <PartyPopper className="text-primary h-5 w-5" />
             <span className="font-heading font-bold">Create Invite</span>
           </div>
         </div>
@@ -100,18 +94,16 @@ export default function CreateInvitePage() {
         {/* Step indicator */}
         <div className="mb-8 flex items-center gap-2">
           {["Details", "Template", "Gifts"].map((label, i) => (
-            <div key={label} className="flex items-center gap-2 flex-1">
+            <div key={label} className="flex flex-1 items-center gap-2">
               <div
                 className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold transition-colors ${
-                  i <= stepIndex
-                    ? "party-gradient text-white"
-                    : "bg-muted text-muted-foreground"
+                  i <= stepIndex ? "party-gradient text-white" : "bg-muted text-muted-foreground"
                 }`}
               >
                 {i + 1}
               </div>
               <span
-                className={`text-sm font-medium hidden sm:block ${
+                className={`hidden text-sm font-medium sm:block ${
                   i <= stepIndex ? "text-foreground" : "text-muted-foreground"
                 }`}
               >
@@ -119,9 +111,7 @@ export default function CreateInvitePage() {
               </span>
               {i < 2 && (
                 <div
-                  className={`flex-1 h-0.5 rounded ${
-                    i < stepIndex ? "bg-primary" : "bg-muted"
-                  }`}
+                  className={`h-0.5 flex-1 rounded ${i < stepIndex ? "bg-primary" : "bg-muted"}`}
                 />
               )}
             </div>

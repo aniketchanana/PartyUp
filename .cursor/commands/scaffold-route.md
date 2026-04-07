@@ -19,6 +19,7 @@ Create a new Next.js App Router route following the project's conventions.
 3. **Create `page.tsx`**:
 
    **Server Component (default):**
+
    ```tsx
    import type { Metadata } from "next";
 
@@ -36,6 +37,7 @@ Create a new Next.js App Router route following the project's conventions.
    ```
 
    **Client Component (if state/interactivity needed):**
+
    ```tsx
    "use client";
 
@@ -58,26 +60,32 @@ Create a new Next.js App Router route following the project's conventions.
    ```
 
 4. **Create `loading.tsx`** (skeleton):
+
    ```tsx
    export default function Loading() {
      return (
        <div className="animate-pulse space-y-4 p-6">
-         <div className="h-8 w-48 rounded-lg bg-muted" />
-         <div className="h-64 rounded-xl bg-muted" />
+         <div className="bg-muted h-8 w-48 rounded-lg" />
+         <div className="bg-muted h-64 rounded-xl" />
        </div>
      );
    }
    ```
 
 5. **Create `page.test.tsx`**:
+
    ```tsx
    import { describe, it, expect } from "vitest";
    import { screen } from "@testing-library/react";
    // renderWithAuth if protected, render if public
 
    describe("<PageName>Page", () => {
-     it("should render the page", () => { /* ... */ });
-     it("should redirect unauthenticated users", () => { /* if protected */ });
+     it("should render the page", () => {
+       /* ... */
+     });
+     it("should redirect unauthenticated users", () => {
+       /* if protected */
+     });
    });
    ```
 

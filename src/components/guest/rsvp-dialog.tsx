@@ -50,7 +50,7 @@ export function RsvpDialog({
 
   function toggleGift(id: string) {
     setSelectedGiftIds((prev) =>
-      prev.includes(id) ? prev.filter((g) => g !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((g) => g !== id) : [...prev, id],
     );
   }
 
@@ -69,8 +69,7 @@ export function RsvpDialog({
       setSubmitted(true);
       toast.success("RSVP submitted! See you at the party!");
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : "Something went wrong";
+      const message = err instanceof Error ? err.message : "Something went wrong";
       if (message.includes("already claimed")) {
         toast.error("One or more gifts were just claimed. Please re-select.");
         const fresh = await getAvailableGifts(inviteId);
@@ -107,16 +106,13 @@ export function RsvpDialog({
         className={cn(
           "flex flex-col gap-0 overflow-x-hidden",
           // Mobile: nearly full viewport — fewer scroll surprises; inner region scrolls, not nested gift box
-          submitted
-            ? "overflow-y-auto"
-            : "max-sm:overflow-hidden sm:overflow-y-auto",
+          submitted ? "overflow-y-auto" : "max-sm:overflow-hidden sm:overflow-y-auto",
           // Mobile-first: bottom sheet, edge-to-edge
-          "max-sm:top-auto max-sm:bottom-0 max-sm:left-0 max-sm:right-0 max-sm:translate-x-0 max-sm:translate-y-0",
+          "max-sm:top-auto max-sm:right-0 max-sm:bottom-0 max-sm:left-0 max-sm:translate-x-0 max-sm:translate-y-0",
           "max-sm:w-full max-sm:max-w-none max-sm:rounded-t-3xl max-sm:rounded-b-none",
           "max-sm:border-x-0 max-sm:border-b-0",
-          !submitted &&
-            "max-sm:min-h-[min(92dvh,900px)] max-sm:max-h-[96dvh]",
-          "max-sm:pb-[max(1.25rem,env(safe-area-inset-bottom,0px))] max-sm:pt-3",
+          !submitted && "max-sm:max-h-[96dvh] max-sm:min-h-[min(92dvh,900px)]",
+          "max-sm:pt-3 max-sm:pb-[max(1.25rem,env(safe-area-inset-bottom,0px))]",
           "max-sm:shadow-[0_-12px_40px_-12px_rgba(0,0,0,0.14)]",
           "max-sm:data-open:slide-in-from-bottom-8 max-sm:data-closed:slide-out-to-bottom-8",
           "sm:max-w-lg",
@@ -139,15 +135,15 @@ export function RsvpDialog({
 
         {submitted ? (
           <div className="flex flex-col items-center py-6 text-center sm:py-8">
-            <PartyPopper className="mb-4 h-16 w-16 text-primary sm:h-20 sm:w-20" />
+            <PartyPopper className="text-primary mb-4 h-16 w-16 sm:h-20 sm:w-20" />
             <DialogTitle className="font-heading mb-2 text-2xl font-bold sm:text-3xl">
               You&apos;re In!
             </DialogTitle>
-            <p className="max-w-sm text-base text-muted-foreground sm:text-lg">
+            <p className="text-muted-foreground max-w-sm text-base sm:text-lg">
               Thanks for RSVPing. We can&apos;t wait to see you!
             </p>
             <Button
-              className="mt-8 min-h-11 w-full max-w-xs party-gradient text-base font-semibold text-white sm:mt-6"
+              className="party-gradient mt-8 min-h-11 w-full max-w-xs text-base font-semibold text-white sm:mt-6"
               onClick={handleClose}
             >
               Done
@@ -164,10 +160,7 @@ export function RsvpDialog({
               </DialogDescription>
             </DialogHeader>
 
-            <form
-              onSubmit={handleSubmit}
-              className="mt-4 flex min-h-0 flex-1 flex-col sm:mt-2"
-            >
+            <form onSubmit={handleSubmit} className="mt-4 flex min-h-0 flex-1 flex-col sm:mt-2">
               <div
                 className={cn(
                   "min-h-0 space-y-6 sm:space-y-5",
@@ -177,7 +170,7 @@ export function RsvpDialog({
                 {/* Gift selection */}
                 {loadingGifts ? (
                   <div className="flex justify-center py-4">
-                    <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                    <Loader2 className="text-muted-foreground h-5 w-5 animate-spin" />
                   </div>
                 ) : (
                   gifts.length > 0 && (
@@ -223,16 +216,14 @@ export function RsvpDialog({
 
                 {/* Pax */}
                 <div className="space-y-3">
-                  <Label className="text-base sm:text-sm">
-                    Number of Guests (including you)
-                  </Label>
+                  <Label className="text-base sm:text-sm">Number of Guests (including you)</Label>
                   <div className="flex items-center justify-center gap-6 sm:gap-4">
                     <button
                       type="button"
                       aria-label="Decrease guest count"
                       onClick={() => setPax(Math.max(1, pax - 1))}
                       disabled={pax <= 1}
-                      className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-primary text-primary transition-colors hover:bg-primary hover:text-primary-foreground disabled:pointer-events-none disabled:opacity-30 sm:h-10 sm:w-10"
+                      className="border-primary text-primary hover:bg-primary hover:text-primary-foreground flex h-12 w-12 items-center justify-center rounded-full border-2 transition-colors disabled:pointer-events-none disabled:opacity-30 sm:h-10 sm:w-10"
                     >
                       <Minus className="h-6 w-6 sm:h-5 sm:w-5" />
                     </button>
@@ -244,7 +235,7 @@ export function RsvpDialog({
                       aria-label="Increase guest count"
                       onClick={() => setPax(Math.min(20, pax + 1))}
                       disabled={pax >= 20}
-                      className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-primary text-primary transition-colors hover:bg-primary hover:text-primary-foreground disabled:pointer-events-none disabled:opacity-30 sm:h-10 sm:w-10"
+                      className="border-primary text-primary hover:bg-primary hover:text-primary-foreground flex h-12 w-12 items-center justify-center rounded-full border-2 transition-colors disabled:pointer-events-none disabled:opacity-30 sm:h-10 sm:w-10"
                     >
                       <Plus className="h-6 w-6 sm:h-5 sm:w-5" />
                     </button>
@@ -255,13 +246,9 @@ export function RsvpDialog({
               <Button
                 type="submit"
                 disabled={submitting || !name.trim()}
-                className="mt-6 min-h-12 w-full shrink-0 text-base font-semibold party-gradient text-white max-sm:mt-4 sm:min-h-9 sm:text-sm"
+                className="party-gradient mt-6 min-h-12 w-full shrink-0 text-base font-semibold text-white max-sm:mt-4 sm:min-h-9 sm:text-sm"
               >
-                {submitting ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  "Submit RSVP"
-                )}
+                {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Submit RSVP"}
               </Button>
             </form>
           </div>

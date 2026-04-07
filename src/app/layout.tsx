@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${poppins.variable} ${inter.variable} h-full`}>
-      <body className="min-h-full flex flex-col antialiased">
+      <body className="flex min-h-full flex-col antialiased">
         <AuthProvider>
           {children}
           <Toaster richColors position="top-center" />

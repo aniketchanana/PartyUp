@@ -32,10 +32,7 @@ export interface InviteFormData {
 
 const COLLECTION = "invites";
 
-export async function createInvite(
-  hostId: string,
-  data: InviteFormData
-): Promise<string> {
+export async function createInvite(hostId: string, data: InviteFormData): Promise<string> {
   const docRef = await addDoc(collection(db, COLLECTION), {
     hostId,
     location: data.location,
@@ -65,10 +62,7 @@ export async function getInvite(inviteId: string): Promise<Invite | null> {
 }
 
 export async function getInvitesByHost(hostId: string): Promise<Invite[]> {
-  const q = query(
-    collection(db, COLLECTION),
-    where("hostId", "==", hostId)
-  );
+  const q = query(collection(db, COLLECTION), where("hostId", "==", hostId));
   const snap = await getDocs(q);
   const invites = snap.docs.map((s) => {
     const d = s.data();

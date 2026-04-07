@@ -63,9 +63,9 @@ service cloud.firestore {
 
 ## Routes
 
-| Route | Description |
-|-------|------------|
-| `/` | Landing page with auth dialog |
-| `/dashboard` | Host dashboard (protected) |
-| `/dashboard/create` | Multi-step invite creation |
-| `/invite/[id]` | Public guest invite view |
+| Route               | Description                   |
+| ------------------- | ----------------------------- |
+| `/`                 | Landing page with auth dialog |
+| `/dashboard`        | Host dashboard (protected)    |
+| `/dashboard/create` | Multi-step invite creation    |
+| `/invite/[id]`      | Public guest invite view      |

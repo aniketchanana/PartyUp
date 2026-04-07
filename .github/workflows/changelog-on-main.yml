@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
     inputs:
       pr_number:
-        description: 'Merged PR number to evaluate for the auto-update-changelog label'
+        description: "Merged PR number to evaluate for the auto-update-changelog label"
         required: true
         type: number
 

@@ -19,11 +19,7 @@ async function fetchInvite(id: string) {
     dateTime: d.dateTime.toDate() as Date,
     heading: d.heading as string,
     hostName: d.hostName as string,
-    templateType: d.templateType as
-      | "birthday"
-      | "marriage"
-      | "baby-shower"
-      | "new-baby",
+    templateType: d.templateType as "birthday" | "marriage" | "baby-shower" | "new-baby",
     createdAt: d.createdAt.toDate() as Date,
   };
 }
@@ -57,10 +53,8 @@ export default async function InvitePage({ params }: Props) {
     return (
       <div className="flex flex-1 items-center justify-center">
         <div className="text-center">
-          <h1 className="font-heading text-4xl font-bold text-muted-foreground">
-            404
-          </h1>
-          <p className="mt-2 text-muted-foreground">
+          <h1 className="font-heading text-muted-foreground text-4xl font-bold">404</h1>
+          <p className="text-muted-foreground mt-2">
             This invite doesn&apos;t exist or has been removed.
           </p>
         </div>

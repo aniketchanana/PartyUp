@@ -26,11 +26,7 @@ function giftsRef(inviteId: string) {
   return collection(db, "invites", inviteId, "gifts");
 }
 
-export async function addGift(
-  inviteId: string,
-  itemName: string,
-  link?: string
-): Promise<string> {
+export async function addGift(inviteId: string, itemName: string, link?: string): Promise<string> {
   const docRef = await addDoc(giftsRef(inviteId), {
     itemName,
     link: link?.trim() || null,
@@ -40,10 +36,7 @@ export async function addGift(
   return docRef.id;
 }
 
-export async function addGifts(
-  inviteId: string,
-  items: GiftInput[]
-): Promise<void> {
+export async function addGifts(inviteId: string, items: GiftInput[]): Promise<void> {
   const ref = giftsRef(inviteId);
   await Promise.all(
     items.map((item) =>
@@ -52,8 +45,8 @@ export async function addGifts(
         link: item.link?.trim() || null,
         isClaimed: false,
         claimedBy: null,
-      })
-    )
+      }),
+    ),
   );
 }
 
@@ -89,12 +82,10 @@ export async function getAvailableGifts(inviteId: string): Promise<Gift[]> {
 export async function claimGifts(
   inviteId: string,
   giftIds: string[],
-  claimedBy: string
+  claimedBy: string,
 ): Promise<void> {
   await runTransaction(db, async (transaction) => {
-    const refs = giftIds.map((gid) =>
-      doc(db, "invites", inviteId, "gifts", gid)
-    );
+    const refs = giftIds.map((gid) => doc(db, "invites", inviteId, "gifts", gid));
     const snaps = await Promise.all(refs.map((r) => transaction.get(r)));
 
     for (const snap of snaps) {
@@ -108,9 +99,6 @@ export async function claimGifts(
   });
 }
 
-export async function removeGift(
-  inviteId: string,
-  giftId: string
-): Promise<void> {
+export async function removeGift(inviteId: string, giftId: string): Promise<void> {
   await deleteDoc(doc(db, "invites", inviteId, "gifts", giftId));
 }

@@ -55,7 +55,7 @@ function validate(values: InviteFormValues): FieldErrors {
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
   return (
-    <p className="flex items-center gap-1 text-sm text-destructive mt-1">
+    <p className="text-destructive mt-1 flex items-center gap-1 text-sm">
       <AlertCircle className="h-3.5 w-3.5 shrink-0" />
       {message}
     </p>
@@ -103,16 +103,14 @@ export function InviteForm({
         <form onSubmit={handleSubmit} className="space-y-5" noValidate>
           <div className="space-y-2">
             <Label htmlFor="heading" className="flex items-center gap-2">
-              <Type className="h-4 w-4 text-primary" />
+              <Type className="text-primary h-4 w-4" />
               Party Heading / One-liner
             </Label>
             <Input
               id="heading"
               placeholder="You're invited to Sarah's 30th!"
               value={values.heading}
-              onChange={(e) =>
-                onChange({ ...values, heading: e.target.value })
-              }
+              onChange={(e) => onChange({ ...values, heading: e.target.value })}
               onBlur={() => handleBlur("heading")}
               aria-invalid={!!(touched.heading && errors.heading)}
             />
@@ -121,16 +119,14 @@ export function InviteForm({
 
           <div className="space-y-2">
             <Label htmlFor="hostName" className="flex items-center gap-2">
-              <User className="h-4 w-4 text-primary" />
+              <User className="text-primary h-4 w-4" />
               Host / Organizer Name
             </Label>
             <Input
               id="hostName"
               placeholder="Sarah & Mike"
               value={values.hostName}
-              onChange={(e) =>
-                onChange({ ...values, hostName: e.target.value })
-              }
+              onChange={(e) => onChange({ ...values, hostName: e.target.value })}
               onBlur={() => handleBlur("hostName")}
               aria-invalid={!!(touched.hostName && errors.hostName)}
             />
@@ -139,16 +135,14 @@ export function InviteForm({
 
           <div className="space-y-2">
             <Label htmlFor="location" className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-primary" />
+              <MapPin className="text-primary h-4 w-4" />
               Location
             </Label>
             <Input
               id="location"
               placeholder="The Grand Ballroom, 123 Main St"
               value={values.location}
-              onChange={(e) =>
-                onChange({ ...values, location: e.target.value })
-              }
+              onChange={(e) => onChange({ ...values, location: e.target.value })}
               onBlur={() => handleBlur("location")}
               aria-invalid={!!(touched.location && errors.location)}
             />
@@ -157,7 +151,7 @@ export function InviteForm({
 
           <div className="space-y-2">
             <Label htmlFor="dateTime" className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-primary" />
+              <Calendar className="text-primary h-4 w-4" />
               Date and Time
             </Label>
             <Input
@@ -165,19 +159,14 @@ export function InviteForm({
               type="datetime-local"
               min={minDateTime}
               value={values.dateTime}
-              onChange={(e) =>
-                onChange({ ...values, dateTime: e.target.value })
-              }
+              onChange={(e) => onChange({ ...values, dateTime: e.target.value })}
               onBlur={() => handleBlur("dateTime")}
               aria-invalid={!!(touched.dateTime && errors.dateTime)}
             />
             {touched.dateTime && <FieldError message={errors.dateTime} />}
           </div>
 
-          <Button
-            type="submit"
-            className="w-full party-gradient text-white font-semibold"
-          >
+          <Button type="submit" className="party-gradient w-full font-semibold text-white">
             Next: Choose Template
           </Button>
         </form>

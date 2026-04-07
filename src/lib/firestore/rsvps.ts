@@ -1,11 +1,4 @@
-import {
-  collection,
-  addDoc,
-  getDocs,
-  Timestamp,
-  orderBy,
-  query,
-} from "firebase/firestore";
+import { collection, addDoc, getDocs, Timestamp, orderBy, query } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
 export interface RSVP {
@@ -22,7 +15,7 @@ function rsvpsRef(inviteId: string) {
 export async function createRSVP(
   inviteId: string,
   guestName: string,
-  pax: number
+  pax: number,
 ): Promise<string> {
   const docRef = await addDoc(rsvpsRef(inviteId), {
     guestName,

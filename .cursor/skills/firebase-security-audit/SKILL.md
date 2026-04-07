@@ -15,19 +15,23 @@ Security-focused analysis of all Firestore data access. Uses firebase-architect 
 ## Audit Workflow
 
 ### Phase 1: Catalog Operations
+
 Read `src/lib/firestore/`, `src/lib/auth-context.tsx`, and `src/app/invite/[id]/page.tsx`. Build a table:
 
 | Operation | Path | Type | Auth Required? | File:Line |
 
 ### Phase 2: Map Required Rules
+
 For each operation, determine the minimum security rule: public read, authenticated write with ownership check, guest write with constraints, etc.
 
 ### Phase 3: Check Existing Rules
+
 1. Read `firestore.rules` at repo root (if it exists)
 2. Compare against required rules from Phase 2
 3. Flag missing coverage as critical
 
 ### Phase 4: Identify Vulnerabilities
+
 1. Writes without corresponding security rules
 2. Missing field validation in rules (guest could set `hostId`)
 3. `updateDoc` on shared data instead of `runTransaction`
@@ -36,6 +40,7 @@ For each operation, determine the minimum security rule: public read, authentica
 6. Missing rate limiting (RSVP spam, gift claim abuse)
 
 ### Phase 5: Auth Patterns
+
 1. AuthProvider handles loading state (no content flash)
 2. Dashboard redirects unauthenticated users
 3. signOut clears state and listeners

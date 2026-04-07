@@ -15,20 +15,25 @@ Comprehensive performance analysis of the PartyUp codebase. Uses knowledge from 
 ## Audit Workflow
 
 ### Phase 1: Rendering Efficiency
+
 Read `src/components/**/*.tsx` and `src/app/**/*.tsx`. Flag:
+
 1. Inline objects/arrays/functions in JSX props (especially to memoized children)
 2. Components in `.map()` loops missing `React.memo`
 3. Context provider values recreated every render (missing `useMemo`)
 4. State too high — parent re-renders when only a child needs the state
 
 ### Phase 2: Bundle & Loading
+
 1. Scan imports for barrel imports from large libs (`date-fns`, `framer-motion`)
 2. Identify `next/dynamic` candidates: template renderers, dialogs, modals, heavy form components
 3. Find raw `<img>` tags (should be `next/image`)
 4. Verify fonts use `next/font`, not `<link>` stylesheet
 
 ### Phase 3: Firebase Query Efficiency
+
 Read `src/lib/firestore/`. Flag:
+
 1. `getDocs` without `limit()` on growing collections
 2. Fetching docs to count instead of `getCountFromServer`
 3. Full doc reads where `select()` would suffice
@@ -37,6 +42,7 @@ Read `src/lib/firestore/`. Flag:
 6. List queries without pagination
 
 ### Phase 4: Core Web Vitals
+
 1. **LCP** — Is the largest element server-rendered, preloaded, not lazy-loaded?
 2. **CLS** — Images without dimensions? Dynamic content above fold? Font swap?
 3. **INP** — Click handlers with sync Firestore reads? Missing `startTransition`?

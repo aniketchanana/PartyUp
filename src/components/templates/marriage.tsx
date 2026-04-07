@@ -49,24 +49,13 @@ function FloralCorner({ position }: { position: "tl" | "tr" | "bl" | "br" }) {
   );
 }
 
-export function MarriageTemplate({
-  invite,
-  onRsvp,
-}: {
-  invite: Invite;
-  onRsvp: () => void;
-}) {
+export function MarriageTemplate({ invite, onRsvp }: { invite: Invite; onRsvp: () => void }) {
   return (
     <div className="relative min-h-screen overflow-hidden bg-linear-to-b from-rose-50 via-pink-50 to-amber-50">
       {/* Floating hearts */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         {[14, 24, 18, 22, 16, 26, 20, 15].map((size, i) => (
-          <FloatingHeart
-            key={i}
-            delay={i * 1.2}
-            x={`${10 + i * 12}%`}
-            size={size}
-          />
+          <FloatingHeart key={i} delay={i * 1.2} x={`${10 + i * 12}%`} size={size} />
         ))}
       </div>
 
@@ -82,7 +71,7 @@ export function MarriageTemplate({
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="text-sm uppercase tracking-[0.3em] text-rose-400 font-medium"
+          className="text-sm font-medium tracking-[0.3em] text-rose-400 uppercase"
         >
           You Are Cordially Invited
         </motion.div>
@@ -100,7 +89,7 @@ export function MarriageTemplate({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.6 }}
-          className="font-heading text-4xl font-extrabold text-center sm:text-5xl md:text-6xl text-rose-900"
+          className="font-heading text-center text-4xl font-extrabold text-rose-900 sm:text-5xl md:text-6xl"
         >
           {invite.heading}
         </motion.h1>
@@ -116,7 +105,7 @@ export function MarriageTemplate({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.1 }}
-          className="mt-4 text-rose-700/80 font-medium italic"
+          className="mt-4 font-medium text-rose-700/80 italic"
         >
           Hosted by {invite.hostName}
         </motion.p>
@@ -129,11 +118,9 @@ export function MarriageTemplate({
         >
           <div className="flex items-center gap-2 text-rose-700">
             <Calendar className="h-4 w-4" />
-            <span className="font-medium">
-              {format(invite.dateTime, "EEEE, MMMM do yyyy")}
-            </span>
+            <span className="font-medium">{format(invite.dateTime, "EEEE, MMMM do yyyy")}</span>
           </div>
-          <div className="text-rose-600 font-semibold text-lg">
+          <div className="text-lg font-semibold text-rose-600">
             {format(invite.dateTime, "h:mm a")}
           </div>
           <div className="flex items-center gap-2 text-rose-700">
@@ -149,7 +136,7 @@ export function MarriageTemplate({
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onRsvp}
-          className="mt-10 rounded-full border-2 border-rose-400 bg-white/80 backdrop-blur-sm px-10 py-4 text-lg font-bold text-rose-600 shadow-lg transition-all hover:bg-rose-500 hover:text-white hover:border-rose-500 hover:shadow-xl"
+          className="mt-10 rounded-full border-2 border-rose-400 bg-white/80 px-10 py-4 text-lg font-bold text-rose-600 shadow-lg backdrop-blur-sm transition-all hover:border-rose-500 hover:bg-rose-500 hover:text-white hover:shadow-xl"
         >
           RSVP with Love
         </motion.button>
