@@ -31,15 +31,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Invite Not Found" };
   }
 
-  // const dateStr = format(invite.dateTime, "EEEE, MMMM do yyyy 'at' h:mm a");
-  const dateStr = invite.dateTime;
-
   return {
     title: invite.heading,
-    description: `${invite.hostName} invites you! Join us at ${invite.location} on ${dateStr}`,
+    description: `${invite.hostName} invites you! Join us at ${invite.location}`,
     openGraph: {
       title: invite.heading,
-      description: `Hosted by ${invite.hostName} | ${invite.location} | ${dateStr}`,
+      description: `Hosted by ${invite.hostName} | ${invite.location}`,
       type: "website",
     },
   };
